@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Indicar a Antlr4BuildTasks dónde está el jar local de ANTLR -->
+    <Antlr4ToolPath>ANTLR4</Antlr4ToolPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.14.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Include="Definition\\ExprLexer.g4"
+            TargetLanguage="CSharp"
+            AntOutDir="$(IntermediateOutputPath)Antlr\\"
+            AntlrToolJar="ANTLR4\\antlr-4.13.2-complete.jar" />
+    <Antlr4 Include="Definition\\RedLang.g4"
+            TargetLanguage="CSharp"
+            Listener="true"
+            Visitor="true"
+            AntOutDir="$(IntermediateOutputPath)Antlr\\"
+            AntlrToolJar="ANTLR4\\antlr-4.13.2-complete.jar" />
+  </ItemGroup>
+
+  <!-- Evitar compilar dos veces los archivos generados.
+       Antlr4BuildTasks ya agrega a la compilación los .cs que genera en obj/,
+       por lo que removemos las copias de cortesía que se guardan en Generated/Grammar -->
+  <ItemGroup>
+    <Compile Remove="Generated\\Grammar\\*.cs" />
+  </ItemGroup>
+
+</Project>

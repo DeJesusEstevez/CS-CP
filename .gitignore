@@ -1,0 +1,15 @@
+bin/
+obj/
+.vs/
+.idea/
+.vscode/
+.DS_Store
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.dotnet/
+
+# ANTLR generated artifacts (keep sources under Generated/ if needed)
+Generated/*.interp
+Generated/*.tokens
