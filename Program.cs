@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using Antlr4.Runtime;
 using RedLangCompiler.Nodes;
+using RedLangCompiler.Exceptions;
+using RedLangCompiler.Semantics;
 
 namespace RedLangCompiler
 {
@@ -29,7 +31,24 @@ namespace RedLangCompiler
             AstBuilderVisitor visitor = new();
             var ast = (ProgramNode)visitor.Visit(tree);
 
-            // Imprimir el AST resultante
+            try
+            {
+                SemanticAnalyzer analyzer = new();
+                analyzer.Analyze(ast);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Análisis semántico exitoso.");
+                Console.ResetColor();
+            }
+            catch (CompilationException ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Error semántico en línea {ex.Line}, columna {ex.Column}: {ex.Message}");
+                Console.ResetColor();
+                return;
+            }
+
+            // Imprimir el AST resultante si el análisis fue exitoso
             PrintAst(ast);
         }
 
